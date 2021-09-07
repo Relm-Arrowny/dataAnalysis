@@ -75,7 +75,7 @@ class ReadWriteData():
     
     def get_nexus_data(self, subBranch, nData = 0, mainBranch ="/entry1/instrument" ):
         if nData == 0:
-            nData = self.nexusData       
+            nData = self.nexusData      
         return nData[(mainBranch + subBranch)][()]
     def get_scan_type(self, subBranch = "/scan_command", nData = 0, mainBranch ="/entry1" ):
         if nData == 0:

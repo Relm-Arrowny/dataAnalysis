@@ -41,6 +41,7 @@ class Output():
         plt.draw()
         fig =  plt.gcf()    
         plt.show(block = blocking)
+        plt.close()
         return fig
     def add_clipboard_to_figures(self):
         # use monkey-patching to replace the original plt.figure() function with

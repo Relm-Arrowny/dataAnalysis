@@ -9,8 +9,8 @@ convert everything in nexus to ascii e.g. back to the old format
 import time, os, re
 from Tools.ReadWriteData import ReadWriteData
 dr = ReadWriteData()
-folder = "C:\\Users\\wvx67826\\Dropbox\\NNO\\NXS\\"
-output = "C:\\Users\\wvx67826\\Dropbox\\NNO\\ascii\\"
+folder = "C:\\Users\\wvx67826\\Desktop\\wenqing\\DATA\\"
+output = "C:\\Users\\wvx67826\\Desktop\\wenqing\\DATA\\ascii\\"
 
 scanNo = folder
 #scanNo  = range(617473,617477,1)

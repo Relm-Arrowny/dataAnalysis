@@ -8,7 +8,7 @@ Created on 15 Aug 2019
 '''
 from Tools.ReadWriteData import ReadWriteData
 from Tools.DataReduction.DataCorrection import XasDataProcess
-from numpy import vstack, hstack
+from numpy import vstack, hstack, average
 class Reduction(ReadWriteData, XasDataProcess):
     def __init__(self):
         ReadWriteData.__init__(self)
@@ -94,31 +94,54 @@ class Reduction(ReadWriteData, XasDataProcess):
         return lFinalDataName, lFinalData , lCpMetaName, lCpMeta, lCnMetaName, lCnMeta
     
     def get_xmcd(self, folder, lScanPair, lScanableName = None, lMetaName = None, cutoffs = [2,7,-7,-2]):
-        
+            
+            lCpData = [] #store multiples data
+            lCnData = []
+            
             for scan in lScanPair:
+                
                 data = self.read_nexus_data(folder, scan)
                 scanType = self.get_nexus_meta("/pol/pol",nData =data)
                 if "pc" in scanType:
-                    lCpDataName, lCpData, lCpMetaName, lCpMeta = self.__corr_xas_data__(folder, scan, lScanableName, lMetaName, scanType, cutoffs)
+                    lCpDataName, cpData, lCpMetaName, lCpMeta = self.__corr_xas_data__(folder, scan, lScanableName, lMetaName, scanType, cutoffs)
+                    lCpData.append(cpData)
                 elif "nc" in scanType:
-                    lCnDataName, lCnData, lCnMetaName, lCnMeta = self.__corr_xas_data__(folder, scan, lScanableName, lMetaName, scanType, cutoffs)
-                    
+                    lCnDataName, cnData, lCnMetaName, lCnMeta = self.__corr_xas_data__(folder, scan, lScanableName, lMetaName, scanType, cutoffs)
+                    lCnData.append(cnData)
                 elif "lh" in scanType:
                     lCpDataName, lCpData, lCpMetaName, lCpMeta = self.__corr_xas_data__(folder, scan, lScanableName, lMetaName, scanType, cutoffs)
+                    lCpData.append(cpData)
                 elif "lv" in scanType:
-                    lCnDataName, lCnData, lCnMetaName, lCnMeta = self.__corr_xas_data__(folder, scan, lScanableName, lMetaName, scanType, cutoffs)    
+                    lCnDataName, lCnData, lCnMetaName, lCnMeta = self.__corr_xas_data__(folder, scan, lScanableName, lMetaName, scanType, cutoffs)
+                    lCnData.append(cnData)    
                 
                 else: print ("not circular energy scan")
+                #print (scan)
+            #these store the average     
+            aveCpData = lCpData[0]
+
+            aveCnData =  lCnData[0]          
+            
+            for k in range(1,len(lCpData)):
+                for i in range(1, len(aveCpData)):
+                    aveCpData[i] = self.average_w_corr(aveCpData[0],lCpData[k][0], aveCpData[i], lCpData[k][i] )
+                    
+                    
+            for k in range(1,len(lCnData)):
+                for i,j in enumerate(lCnDataName[len(lScanableName)+1:]):
+                    aveCnData[i] = self.average_w_corr(aveCnData[0],lCnData[k][0], aveCnData[i], lCnData[k][i] )
+             
+             
+                    
             lResult = []
             lResultName = []
-            for i,j in enumerate(lCpDataName[len(lScanableName)+1:]):
-                
-                lResult.append( self.xmcd_w_corr(lCpData[0], lCnData[0], lCpData[i + len(lScanableName)+1], lCnData[i + len(lScanableName)+1]))
+            for i,j in enumerate(lCpDataName[len(lScanableName)+1:]):     
+                lResult.append( self.xmcd_w_corr( aveCpData[0],  aveCnData[0], aveCpData[i + len(lScanableName)+1], aveCnData[i + len(lScanableName)+1]))
                 lResultName.append("xmcd %s" %j)
             
             
             lFinalDataName = hstack((lCpDataName, lCnDataName, lResultName))
-            lFinalData     = vstack((lCpData, lCnData, lResult))
+            lFinalData     = vstack((aveCpData, aveCnData, lResult))
            
             return lFinalDataName, lFinalData , lCpMetaName, lCpMeta, lCnMetaName, lCnMeta
         
@@ -126,14 +149,18 @@ class Reduction(ReadWriteData, XasDataProcess):
             
     def __corr_xas_data__(self,folder, scan, lScanableName, lMetaName, scanType, cutoffs):
         lDataName = list(lScanableName)
-        lDataName.insert(0, "/energy/energy")
+        if scanType in ["pc","nc","lh","lv"]:
+            lDataName.insert(0, "/energy/energy")
+        else:
+            lDataName.insert(0, "/%s/%s" %(scanType,scanType))
+            
         lMeta, lData = self.get_reduced_data(folder, scan, lDataName , lMetaName)
         monitor = lData[-1]
         for i,j in enumerate (lScanableName[:-1]):
             lData.append(lData[i+1]/monitor)
             lDataName.append("%s norm" %j)
             # the only different beteen the two is xref normalise to the first data point.
-            if scanType in ["pc","nc"] :
+            if scanType in ["pc","nc","lh","lv"] :
                 lData.append(self.xas_corr(lData[-1], data1lowCutOff = cutoffs[0],
                                                   data1highCutOff = cutoffs[1],
                                                    data1EndLowCutOff = cutoffs[2],

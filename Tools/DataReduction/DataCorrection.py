@@ -92,7 +92,10 @@ class XasDataProcess():
         return (data1-data2)/(data1+data2)    
     def xmcd_ratio_w_corr(self, x1, x2, data1, data2):
         return self.xmcd_ratio(data1,interp(x1,x2, data2))
-        
+    def average_w_corr(self,x1,x2,data1,data2):
+        return self.sumOfArray(data1,interp(x1,x2, data2))
+    def sumOfArray(self,data1,data2):
+        return(data1+data2)/2.0
 
 class AngleToQ():
     def __init__(self):
