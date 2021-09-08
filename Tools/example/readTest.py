@@ -9,11 +9,15 @@ import matplotlib.pyplot as plt
 folder ="\\\data.diamond.ac.uk\\i10\\data\\2021\\cm28168-3\\i10-"
 rWD = ReadWriteData()
 
-scanNoStart = 655780
+scanNoStart = 655782
 rWD.read_nexus_data(folder, scanNoStart)
 x = rWD.get_nexus_data("/energy/energy")
 y = rWD.get_nexus_data("/mcs17/data")
-y = rWD.get_nexus_meta("/chi/chi")
+pol = rWD.get_nexus_meta("/pol/pol")
+
+
+print(pol)
+#y = rWD.get_nexus_meta("/chi/chi")
 plt.figure()
 plt.plot(x,y)
 plt.show()

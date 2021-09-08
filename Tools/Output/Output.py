@@ -23,7 +23,7 @@ class Output():
             title = ""
             for i,j in enumerate (lMetaName):
                 print(lMeta[i])
-                title = title + "%s=%.2f " %(j.split("/")[-1], lMeta[i])
+                title = title + "%s=%s" %(j.split("/")[-1], lMeta[i])
             plt.suptitle(title)
         
         noOfPlot = len(lYNameUse)

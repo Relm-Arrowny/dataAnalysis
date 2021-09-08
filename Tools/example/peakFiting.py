@@ -23,7 +23,7 @@ lscan = [186315,186331,186366,186384,186406,186428,186449,186471,186487]
 
 plt.figure()
 for i in lscan:
-    print i
+    print (i)
     dr.read_file("%s%s.dat" %(folder,i))
     temperature  = dr.get_meta_value("temp2")
     tempData = dr.get_data()

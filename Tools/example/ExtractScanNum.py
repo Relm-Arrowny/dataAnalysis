@@ -5,20 +5,23 @@ Created on 24 Jun 2019
 '''
 
 #from Tools.ReadWriteData import ReadWriteData
-from Tools.I10DataReduction import I10DataReduction
+from Tools.ReadWriteData import ReadWriteData
+from Tools.Output.Output import Output
+from Tools.DataReduction.Reduction import Reduction
+from Tools.DataReduction.AngleToQ import AngleToQ
 import matplotlib.pyplot as plt
 import numpy as np
 
 from Tools.DataReduction import AngleToQ 
 #rd = Tools.ReadWriteData()
-dr = I10DataReduction()
-a2q = AngleToQ()
+dr = ReadWriteData()
+#a2q = AngleToQ()
 folder = "Z:\\2020\\cm26456-4\\i10-"#-pixis-files
 lEscan = []
 lRef = []
-lBadScan = range(608868)
+lBadScan = []
 temp = range(608436, 608867)
-lBadScan = lBadScan +temp# .append(546699)
+lBadScan = temp# .append(546699)
 #print lBadScan
 
 
