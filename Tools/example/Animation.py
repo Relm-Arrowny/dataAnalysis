@@ -3,14 +3,15 @@ Created on 26 Apr 2019
 
 @author: wvx67826
 '''
-from Tools import Tools
+from Tools.ReadWriteData import ReadWriteData
+from Tools.AreaDetector.ImageAnalysis import ImageAnalysis
 from PIL import Image
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy import signal
 import matplotlib.animation as animation
-ima= Tools.ImageAnalysis()
-rd = Tools.ReadWriteData()
+ima= ImageAnalysis()
+rd = ReadWriteData()
 
 folder = "Z:\\2018\\si19469-1\\i10-"#-pixis-files
 filename =  475819   # 350k 537521
@@ -28,10 +29,10 @@ imfile = rd.get_nexus_image_filename ()
 
 for i, k in enumerate (imfile[0:-1:1]):        
     temp = "//dc" +k#.split('/dls')[1]
-    print temp
+    print (temp)
     im = Image.open(temp)
     imarray = np.array(im)
-    print imarray[0][0]
+    print (imarray[0][0])
     imlist.append(imarray[:,500:1500])#imarray[1180:1260,820:940])
     im.close()
 
@@ -48,9 +49,9 @@ for i, k in enumerate (imlist):
     picture3.append((plt.imshow(imdiff[i]),))
 
 im_ani = animation.ArtistAnimation(fig1, picture, interval=1000, repeat_delay=3000, blit=True)
-im_ani.save('537542.mp4')
+#im_ani.save('537542.mp4')
 im_ani2 = animation.ArtistAnimation(fig2, picture2, interval=1000, repeat_delay=3000, blit=True)
-im_ani.save('537542cc.mp4')
+#im_ani.save('537542cc.mp4')
 im_ani3 = animation.ArtistAnimation(fig3, picture3, interval=1000, repeat_delay=3000, blit=True)
-im_ani.save('537542cc.mp4')
+#im_ani.save('537542cc.mp4')
 plt.show()
