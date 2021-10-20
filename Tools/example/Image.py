@@ -34,8 +34,9 @@ for scanNo in range(scanStart,scanEnd):
     matplotlib.rc('font', **font)
     #plt.imshow(im, vmin=200, vmax=1000)
     plt.imshow(arImage[0], vmin=2000, vmax=20000 )
+    
     plt.colorbar()
-
+    plt.savefig("%i.jpg" %scanNo)
 plt.show()
     
     
