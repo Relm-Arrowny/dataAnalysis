@@ -33,16 +33,16 @@ n  = np.array([
 
 d = np.array([
               0,
-              1000,
-              1000
+              1000000,
+              100
               ])
 
 m = 0.1
 
-mm= 0.11*m
+mm= 0.1
 q = np.array([
               0.0,
-              1e-4*mm + 1e-5*i,
+              1e-4*mm + 1e-6*i,
               0
               ])
 #q = n*10.0
@@ -65,10 +65,10 @@ start_time1 = timeit.default_timer()
 angle = np.arange(-100,100,1.0)
 angle = np.append(angle, np.arange(100,-100,-1.0))
 
-spin = [0, 180, 0] #right angle to beam
+#spin = [0, 180, 0] #right angle to beam
 #spin = [15, -15, 0 ] #right angle to beam
 
-#spin = [90,180] #parallel 
+spin = [0,180] #parallel 
 hy = np.full((1,100),spin[0])
 hy = np.append(hy, np.arange(spin[0], spin[1], -(spin[0]-spin[1])/20.0))
 hy = np.append(hy, np.full((1,180),spin[1]))
@@ -76,7 +76,7 @@ hy = np.append(hy, np.arange(spin[1], spin[0], -(spin[1]-spin[0])/20.0))
 hy = np.append(hy, np.full((1,80),spin[0]))
 
 #lTheta = [2, 4, 8, 6, 12, 24]
-lTheta = [10, 80]
+lTheta = [10]
 for ange in lTheta:
     
     intensity1 = np.array([])
@@ -132,13 +132,13 @@ for ange in lTheta:
         
     elapsed = timeit.default_timer() - start_time1
     print (elapsed)
-    """    with open("dataOut.dat", "w") as f:
+    with open("dataOut_90.dat", "w") as f:
         f.write("field, Pi-full, Si-full,Pi-Si, Pi-Pi, Si-Si, Si,-Pi, XMCD, LC,RC \n")
         for n in range (0,len(angle)):                
             f.write("%.8g , %.8g , %.8g, %.8g , %.8g , %.8g,, %.8g , %.8g , %.8g , %.8g \n"
                      %(angle[n],intensity1[n],intensity2[n],intensity3[n],
                        intensity4[n],intensity5[n],intensity6[n],intensity7[n],intensity8[n]
-                       ,intensity9[n]))"""
+                       ,intensity9[n]))
     
     plt.figure()
     plt.suptitle("th = {}, fm={}".format(ange,m))
@@ -166,7 +166,7 @@ for ange in lTheta:
     """
     #plt.figure(7)
     plt.subplot(223)
-    plt.title("Pi + Si")
+    plt.title("Pi - Si")
     plt.plot(angle, intensity7)
     #plt.figure(8)
     plt.subplot(224)
