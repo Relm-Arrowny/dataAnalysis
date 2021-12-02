@@ -9,11 +9,11 @@ convert everything in nexus to ascii e.g. back to the old format
 import time, os, re
 from Tools.ReadWriteData import ReadWriteData
 dr = ReadWriteData()
-folder = "C:\\Users\\wvx67826\\Desktop\\wenqing\\DATA\\"
-output = "C:\\Users\\wvx67826\\Desktop\\wenqing\\DATA\\ascii\\"
+folder = "Z:\\2020\\cm26456-4\\"
+output = "C:\\Users\\wvx67826\\Desktop\\temp\\"
 
 scanNo = folder
-#scanNo  = range(617473,617477,1)
+#scanNo  = list(range(617473,617477,1))
 dr.convert_nexus_ascii(scanNo, folder, output) # scanNo takes either a list or a folder if it is folder it will run everything inside the folder
 
 
