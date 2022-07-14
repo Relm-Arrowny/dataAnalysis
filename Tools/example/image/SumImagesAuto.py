@@ -36,10 +36,10 @@ def sumImages(folder,lastScanNo,newScanNo):
 
 Rd = ReadWriteData()
 #data folder location
-folder = "Z:\\2021\mm28915-1\\"
+folder = "Z:\\2022\mm30601-1\\"
 # This part is an infinite loop to keep checking for the latest scan
-newScanNo =  675971
-lastScanNo = 675970
+newScanNo =  713949
+lastScanNo = 713940
 timeOut = 0
 while timeOut < 24*3600:
     if newScanNo == lastScanNo:

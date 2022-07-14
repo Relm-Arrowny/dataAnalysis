@@ -73,11 +73,11 @@ class ReadWriteData():
         return nData[(mainBranch + subBranch)][()]
         
     
-    def get_nexus_data(self, subBranch, nData = 0, mainBranch ="/entry1/instrument" ):
+    def get_nexus_data(self, subBranch, nData = 0, mainBranch ="/entry/instrument" ):
         if nData == 0:
             nData = self.nexusData      
         return nData[(mainBranch + subBranch)][()]
-    def get_scan_type(self, subBranch = "/scan_command", nData = 0, mainBranch ="/entry1" ):
+    def get_scan_type(self, subBranch = "/scan_command", nData = 0, mainBranch ="/entry" ):
         if nData == 0:
             nData = self.nexusData
         temp = nData[mainBranch + subBranch][()].split()[1]          
@@ -87,7 +87,7 @@ class ReadWriteData():
         f = open(filename, 'w+')
         if metaName != False:
             for i in range(len(metaName)):
-                f.write("%s = %5f" %(metaName[i],meta[i]))
+                f.write("%s = %s" %(metaName[i],meta[i]))
                 f.write("\n" )
         for i in names:
             f.write("%s \t" %i)
@@ -99,33 +99,38 @@ class ReadWriteData():
             f.write("\n" )
         f.close()
 #============== this part is nexus conversion back to ascii============================== 
-    def nexus2ascii(self, outPutFilename, metaKey = "entry1/before_scan/", dataKey = "entry1/instrument/",
-                     redundantKeyList = ["monochromator","name","source","description","id", "type","data_file", "local_name"]):
+#def nexus2ascii(self, outPutFilename, metaKey = "entry1/before_scan/", dataKey = "entry1/instrument/",
+    def nexus2ascii(self, outPutFilename, metaKey = "entry/diamond_scan/", dataKey = "entry/instrument/",
+                     redundantKeyList = ["monochromator","name","source","description","id", "type","data_file", "local_name","beamline","end_station"]):
 #this effectively does all the conversion and write out the data 
         k = self.nexusData
         metaData = []
         data = []
         names = []
+        """
         for key in k[metaKey]:
             meta = "%s%s" %(metaKey, key)
             for key1 in k[meta]:
                 meta1  = meta +"/%s" %key1
                 metaData.append("%s = %s" %(key1,k[meta1][()] ))
-        
+        """
         for key in k[dataKey]:
             tempData = "%s%s" %(dataKey, key)
             # removes key that are redundant 
             if key in redundantKeyList:
                 pass
             else:
+                
                 for key1 in k[tempData]:
+                    
                     if key1 in redundantKeyList:
                         pass
                     else:
                         tempData1  = tempData +"/%s" %key1
                         tempName = "%s/%s" %(key, key1)
+                        print(k[tempData1])
                         names.append(tempName)
-                        data.append(k[tempData1][()] )
+                        data.append(k[tempData1][()])
         f = open(outPutFilename, 'w+')
         for i in metaData:
             f.write("%s\n" %i)   

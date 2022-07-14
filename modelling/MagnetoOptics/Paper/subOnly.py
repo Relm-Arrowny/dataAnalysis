@@ -27,26 +27,20 @@ xrMoke = XrayMoke()
 ##============= Define sample gamma and beta ===============================
 n  = np.array([
                1.0,
-               1.0+ 0.00376976072 + 0.00253175874*i, #Pt
                1.0 + 0.0014459691 + 0.000331679883*i, #permalloy 80
-               1.0 + 0.000922611449 + 0.0001342364124*i #Si 
                ])
 
 d = np.array([
               0,
-              30,
               100,
-              308.4
               ])
 
 q = np.array([
               0.0,
-              0.0,
-              0.0014459691*0.01 + 0.00331679883*0.01*i, 
-              0.0
+              0.0014459691*0.1 + 0.00331679883*0.1*i, 
               ])
-aPhi =   np.array([0.0, 0.0, 90,0, 0.0,])
-aGamma = np.array([0.0, 0.0, 90,0, 0.0,])
+aPhi =   np.array([0.0, 90,])
+aGamma = np.array([0.0, 90,])
 ##=================================================================================
 
 """To store result"""
@@ -66,14 +60,14 @@ angle = np.append(angle, np.arange(100,-100,-1.0))
 #spin = [0, 180, 0] #right angle to beam
 #spin = [15, -15, 0 ] #right angle to beam
 
-spin = [270,90] #parallel 
+spin = [90,-90] #parallel 
 hy = np.full((1,100),spin[0])
 hy = np.append(hy, np.arange(spin[0], spin[1], -(spin[0]-spin[1])/20.0))
 hy = np.append(hy, np.full((1,180),spin[1]))
 hy = np.append(hy, np.arange(spin[1], spin[0], -(spin[1]-spin[0])/20.0))
 hy = np.append(hy, np.full((1,80),spin[0]))
 
-lTheta = [9]
+lTheta = [1]
 #lTheta = [30]
 field = np.array([])
 intensity = np.array([])
@@ -106,7 +100,7 @@ for ange in lTheta:
     for gamma1 in hy:    
         #aPhi[1] = np.deg2rad(gamma1)
         #aPhi[4] = np.deg2rad(gamma1)
-        aGamma[2] = np.deg2rad(gamma1)
+        aGamma[1] = np.deg2rad(gamma1)
         #aGamma[4] = np.deg2rad(gamma1)
         """    if gamma1 ==spin[0]:
             aPhi[3] = np.deg2rad(14)

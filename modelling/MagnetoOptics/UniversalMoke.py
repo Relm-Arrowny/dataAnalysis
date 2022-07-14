@@ -87,7 +87,7 @@ class XrayMoke():
         mGInv = np.linalg.inv(mG)
         mI = mM[2:4,0:2]
         mIGInv = np.dot(mI,mGInv)
-        mIntensity =mIGInv# np.dot(mIGInv,np.conj(mIGInv))
+        mIntensity = mIGInv# np.dot(mIGInv,np.conj(mIGInv))
         self.mIntensity = mIntensity
         return mIntensity
     

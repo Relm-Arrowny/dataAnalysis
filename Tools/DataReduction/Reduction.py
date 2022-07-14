@@ -14,7 +14,7 @@ class Reduction(ReadWriteData, XasDataProcess):
         ReadWriteData.__init__(self)
         XasDataProcess.__init__(self)
         
-    def scans_info(self, folder, scanNo, lInfo = ["/pgm_energy/pgm_energy"]):
+    def scans_info(self, folder, scanNo, lInfo = ["/pgm/energy"]):
         """
         provide scan number together with user requested meta data
 
@@ -26,7 +26,7 @@ class Reduction(ReadWriteData, XasDataProcess):
         scanType = self.get_scan_type()
         scans_info_list.append(scanType)
         for i in lInfo:
-            scans_info_list.append(self.get_nexus_meta(i)) 
+            scans_info_list.append(self.get_nexus_data(i)) 
         
         return scans_info_list
 
@@ -42,9 +42,10 @@ class Reduction(ReadWriteData, XasDataProcess):
         
         self.read_nexus_data(folder, scanNo)
         for i in lScanableName:
+            print(i)
             lData.append(self.get_nexus_data(i))
         for i in lMetaName:
-            lMeta.append(self.get_nexus_meta(i))
+            lMeta.append(self.get_nexus_data(i))
                              
         return lMeta, lData
     
@@ -101,7 +102,7 @@ class Reduction(ReadWriteData, XasDataProcess):
             for scan in lScanPair:
                 
                 data = self.read_nexus_data(folder, scan)
-                scanType = self.get_nexus_meta("/pol/pol",nData =data)
+                scanType = self.get_nexus_data("/id/polarisation",nData =data)
                 if "pc" in scanType:
                     lCpDataName, cpData, lCpMetaName, lCpMeta = self.__corr_xas_data__(folder, scan, lScanableName, lMetaName, scanType, cutoffs)
                     lCpData.append(cpData)
@@ -150,9 +151,9 @@ class Reduction(ReadWriteData, XasDataProcess):
     def __corr_xas_data__(self,folder, scan, lScanableName, lMetaName, scanType, cutoffs):
         lDataName = list(lScanableName)
         if scanType in ["pc","nc","lh","lv"]:
-            lDataName.insert(0, "/energy/energy")
+            lDataName.insert(0, "/pgm/energy")
         else:
-            lDataName.insert(0, "/%s/%s" %(scanType,scanType))
+            lDataName.insert(0, "/%s/%s" %(scanType,"value"))
             
         lMeta, lData = self.get_reduced_data(folder, scan, lDataName , lMetaName)
         monitor = lData[-1]
