@@ -58,24 +58,6 @@ while timeOut < 24*3600:
     else:
        
         timeOut = 0
-        """            #try and only load file if the folder exist
-        for scanNo in range(lastScanNo,newScanNo+1,1):
-            imarray = np.zeros((2048,2048), dtype = int)
-            try:
-                imageDir = folder + "%i-pixis-files\\" %scanNo
-                arImage =  np.array(listdir(imageDir))
-                
-                for imPath in arImage:
-                    
-                    im = Image.open(imageDir+imPath)
-                    imarray = imarray + np.array(im)/arImage.size
-                saveImage = Image.fromarray(imarray)
-                saveImage.save(folder +"\\processing\\%i_SUMMED.tiff" %scanNo)
-                print ("%i" %scanNo)
-        
-            except FileNotFoundError:
-                print ("I do not care %i" %scanNo)    
-        """
         sumImages(folder,lastScanNo,newScanNo)
         lastScanNo = newScanNo
 

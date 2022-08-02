@@ -45,10 +45,32 @@ q = np.array([
               0.0,
               0.0
               ])
-aPhi =   np.array([0.0, 0.0, 90,0, 0.0,0.0])
+aPhi =   np.array([0.0, 0.0, 5,0, 0.0,0.0])
 aGamma = np.array([0.0, 0.0, 90,0, 0.0,0.0])
 ##=================================================================================
 
+
+##============= Define sample gamma and beta ===============================
+n  = np.array([
+               1.0,
+               1.0 + 0.0014459691 + 0.000331679883*i, #permalloy 80
+               1.0 + 0.000922611449 + 0.0001342364124*i #Si 
+               ])
+
+d = np.array([
+              0,
+              100,
+              308.4
+              ])
+
+q = np.array([
+              0.0,
+              0.0014459691*0.01 + 0.00331679883*0.01*i, 
+              0.0
+              ])
+aPhi =   np.array([0.0, 5,0, 0.0,])
+aGamma = np.array([0.0, 90,0, 0.0,])
+##=================================================================================
 
 """To store result"""
 angle = np.array([])
@@ -74,7 +96,8 @@ hy = np.full((1,80),spin[0])
 hy = np.append(hy, np.full((1,120),spin[1]))
 #hy = np.append(hy, np.arange(spin[1], spin[0], -(spin[1]-spin[0])/20.0))
 #hy = np.append(hy, np.full((1,80),spin[0]))
-
+hy = np.arange (0,180*10, 180*10/200)
+angle = hy
 
 """
 hy = np.full((1,100),spin[0])
@@ -127,7 +150,7 @@ for ange in lTheta:
     """do the hvm loop"""
     for gamma1 in hy:    
 
-        aGamma[2] = np.deg2rad(gamma1)
+        aGamma[1] = np.deg2rad(gamma1)
         Qz = gamma1-90
           
 
@@ -190,20 +213,21 @@ for ange in lTheta:
 i = "PCD90"
 j = "PND90"
 print (len(lth), len(lAngle), len(lIntensity9))
+lth = 4*np.pi/(12.4/0.707)*np.sin(np.deg2rad(lth))
 plt.figure()
-plt.tricontourf(lth, lAngle , lIntensity9, 30, cmap=plt.get_cmap('jet'))
+plt.tricontourf( lAngle ,lth, lIntensity9, 30, cmap=plt.get_cmap('jet'))
 plt.title("Positive Helicity Increasing", fontsize=18)
 plt.title("Positive Helicity Decreasing", fontsize=18)
-plt.xlabel("Theta (\u00b0)", fontsize=18)
-plt.ylabel("Field (Gauss)", fontsize=18)
+plt.ylabel("Theta (\u00b0)", fontsize=18)
+plt.xlabel("Moment in-plane angle", fontsize=18)
 plt.colorbar()
-plt.savefig("output\\%s-refMap" %(i))
+#plt.savefig("output\\%s-refMap" %(i))
 plt.figure()
-plt.tricontourf(lth, lAngle , lIntensity8, 30, cmap=plt.get_cmap('jet'))
+plt.tricontourf(lAngle ,lth,  lIntensity8, 30, cmap=plt.get_cmap('jet'))
 plt.title("Negative Helicity Increasing", fontsize=18)
 plt.title("Negative Helicity Decreasing", fontsize=18)
-plt.xlabel("Theta (\u00b0)", fontsize=18)
-plt.ylabel("Field (Gauss)", fontsize=18)
+plt.ylabel("Theta (\u00b0)", fontsize=18)
+plt.xlabel("Moment in-plane angle", fontsize=18)
 plt.colorbar()
-plt.savefig("output\\%s-refMap" %(j))
+#plt.savefig("output\\%s-refMap" %(j))
 plt.show()
