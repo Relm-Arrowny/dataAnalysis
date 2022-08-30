@@ -1,25 +1,32 @@
 '''
 Created on 19 Jul 2017
 @author: wvx67826
-Read and write data. 
-For ascii format:
-Read_file(filename)
+
+
+@Description :
+    Read and write data. For NEXUS and diamond old ascii format. The read function will read data 
+    into memory and get function will get the data requested and store in an array. 
+     
     
-get_meta_value(self, metaName):
-get_data(self):
-return ascii formate data
-Nexus format:
-read_nexus_data(self,folder, filename):
-get_nexus_meta(self, subBranch, nData = 0, mainBranch ="/entry1/before_scan"):
-retrun nexus meta data 
-get_nexus_data(self, subBranch, nData = 0, mainBranch ="/entry1/instrument" ):
-get_scan_type(self, subBranch = "/scan_command", nData = 0, mainBranch ="/entry1" ):
-get list of data 
-write_ascii(self, filename, names, data)
-    write data to file
-    file name = output file name
-    names are the name list for the column data
-    list of data 
+
+    For ascii format:
+        Read_file(filename)    
+        get_meta_value(self, metaName):
+        get_data(self):
+        return ascii formate data
+
+    Nexus format:
+        read_nexus_data(self,folder, filename):
+        get_nexus_meta(self, subBranch, nData = 0, mainBranch ="/entry1/before_scan"):
+        get_nexus_data(self, subBranch, nData = 0, mainBranch ="/entry1/instrument" ):
+        get_scan_type(self, subBranch = "/scan_command", nData = 0, mainBranch ="/entry1" ):
+        get list of data 
+    Data output:
+    write_ascii(self, filename, names, data)
+        write data to file
+        file name = output file name
+        names is a list of name for the column data
+        list of data 
 '''
 import numpy as np
 import h5py    # HDF5 support
@@ -54,10 +61,8 @@ class ReadWriteData():
                 if line.split("=",1)[0] == metaName: return float(line.split("=",1)[1])
                  
     def get_data(self):
-        #return np.genfromtxt(self.data, names = True, delimiter = "\t")
         return ascii.read(self.data, delimiter='\t')
     
-        #return ascii.read(self.Data,delimiter=',')
 
 #============================= nexus =============================================
     def read_nexus_data(self,folder, filename):

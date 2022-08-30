@@ -3,10 +3,12 @@ Created on 16 Aug 2018
 
 @author: wvx67826
 
-Try to correct polarization
 '''
 """
-Class to calculate boundary matrix A and A magnetic with arbitrary moment direction 
+Description :
+
+    Class to calculate boundary matrix A and A magnetic with arbitrary moment direction and
+    calculate the intensity of any given incident and reflected light polarization.  
 
 """
 
@@ -95,38 +97,27 @@ class XrayMoke():
         self.set_ipol(inPol)
         mFinI = np.multiply(self.mIntensity, self.mIpol)
         if outPol == "Si+Pi":
-            """finI = np.dot(mFinI[0,0],np.conj(mFinI[0,0]))+np.dot(mFinI[0,1],np.conj(mFinI[0,1]))+ np.dot(
-                          mFinI[1,0],np.conj(mFinI[1,0]))+np.dot(mFinI[1,1],np.conj(mFinI[1,1]))"""
-            """finI = np.dot(mFinI[0,0]+mFinI[0,1],np.conj(mFinI[0,0]+mFinI[1,0]))+np.dot(
-                          mFinI[0,1]+mFinI[1,1],np.conj(mFinI[0,1]+mFinI[1,1]))"""
             finI= np.dot(mFinI[0,0]+mFinI[1,0],np.conj(mFinI[0,0]+mFinI[1,0])) + np.dot(
                          mFinI[0,1]+mFinI[1,1],np.conj(mFinI[0,1]+mFinI[1,1]))
             return np.absolute(finI)
         if outPol == "Si":
-            #finI = np.dot(mFinI[0,0],np.conj(mFinI[0,0]))+np.dot(mFinI[1,0],np.conj(mFinI[1,0]))
-            #finI = mFinI[0,0]+mFinI[1,0]
             finI = np.dot(mFinI[0,0]+mFinI[1,0],np.conj(mFinI[0,0]+mFinI[1,0]))
-            return np.absolute(finI)# np.absolute(np.dot(finI,np.conj(finI)))
+            return np.absolute(finI)
         if outPol == "Pi":
-            #finI = np.dot(mFinI[0,1],np.conj(mFinI[0,1]))+np.dot(mFinI[1,1],np.conj(mFinI[1,1]))
-            finI = np.dot(mFinI[0,1]+mFinI[1,1],np.conj(mFinI[0,1]+mFinI[1,1]))
-            #finI = (mFinI[0,1]+mFinI[1,1])  
-            return np.absolute(finI)#np.absolute(np.dot(finI,np.conj(finI)))
+            finI = np.dot(mFinI[0,1]+mFinI[1,1],np.conj(mFinI[0,1]+mFinI[1,1]))  
+            return np.absolute(finI)
         
     def get_m_m(self,k, n, theta, gamma, phi, q, d, waveLen):
         if k == 0:
             theta = np.arcsin((n[0]+q[0])/(n[k]+q[k])*np.sin(theta))
-            #theta = np.arcsin(n[0]/n[k]*np.sin(theta))
             temp = self.a_mag_matrix(n[k], theta, gamma[k], phi[k], q[k])
             return np.dot(np.linalg.inv(temp),self.get_m_m(k+1, n, theta, gamma, phi, q, d, waveLen))
         if k == len(n)-1:
             theta1 = np.arcsin(((n[k-1]+q[k-1])/(n[k]+q[k]))*np.sin(theta))
-            #theta1 = np.arcsin(n[k-1]/n[k]*np.sin(theta))
             return self.a_mag_matrix(n[k], theta1, gamma[k], phi[k], q[k])
         
         else:
             theta1 = np.arcsin(((n[k-1]+q[k-1])/(n[k]+q[k]))*np.sin(theta))
-            #theta1 = np.arcsin(n[k-1]/n[k]*np.sin(theta))
             return self.m_a_d_inva(n[k], d[k], waveLen, theta1, gamma[k], phi[k], q[k])*self.get_m_m(
                                          k+1, n, theta1, gamma, phi, q, d, waveLen)
         
