@@ -7,8 +7,6 @@ Created on 19 Jul 2017
     Read and write data. For NEXUS and diamond old ascii format. The read function will read data 
     into memory and get function will get the data requested and store in an array. 
      
-    
-
     For ascii format:
         Read_file(filename)    
         get_meta_value(self, metaName):
@@ -27,6 +25,11 @@ Created on 19 Jul 2017
         file name = output file name
         names is a list of name for the column data
         list of data 
+
+    version 2:
+        diamond change the NEXUS format and nexus2ascii no longer functional.
+        update for the new NEXUS format.
+
 '''
 import numpy as np
 import h5py    # HDF5 support
@@ -42,7 +45,6 @@ class ReadWriteData():
 #============================= old ascii format=======================================
     def read_file(self, filename, meta = True, metaStopKey = "&END"):
         with  open(filename,'r') as f:
-            #meta = True
             tMeta = []
             tData = []
             # break up the meta and data
@@ -65,29 +67,37 @@ class ReadWriteData():
     
 
 #============================= nexus =============================================
+    #This load data to memory
     def read_nexus_data(self,folder, filename):
         self.nexusData = h5py.File(str(folder)+ str(filename) + '.nxs',  "r")
         return self.nexusData
     
+    #This will get the meta data branch and return its value
+    #set nData to a h5py object to read data outside class, otherwise it will read object store in self.nexusData
+    #It will require the name of the scanable
+    #No longer needed/required as they removed before scan in the nexus 
     def get_nexus_meta(self, subBranch, nData = 0, mainBranch ="/entry1/before_scan"):
-        #subBranch = "/"+subBranch+"/"+subBranch
+        
         if nData == 0:
             nData = self.nexusData
-        #return nData[mainBranch + subBranch][()]
-        #print (nData[(mainBranch + subBranch)][()])
         return nData[(mainBranch + subBranch)][()]
         
-    
+    #Get the actually data mainBranch is set for the current Neuxs format
+    #requires scanable name. 
     def get_nexus_data(self, subBranch, nData = 0, mainBranch ="/entry/instrument" ):
         if nData == 0:
             nData = self.nexusData      
         return nData[(mainBranch + subBranch)][()]
+    
+    #This return scan command
     def get_scan_type(self, subBranch = "/scan_command", nData = 0, mainBranch ="/entry" ):
         if nData == 0:
             nData = self.nexusData
         temp = nData[mainBranch + subBranch][()].split()[1]          
         return temp
 
+    #This take the filename and up to 4 arrays: names of the scanable, data array, optional metaName and meta array.
+    #Out put data in old ascii format
     def write_ascii(self, filename, names, data, metaName = False, meta = False ):
         f = open(filename, 'w+')
         if metaName != False:
@@ -103,11 +113,11 @@ class ReadWriteData():
                
             f.write("\n" )
         f.close()
+        
 #============== this part is nexus conversion back to ascii============================== 
-#def nexus2ascii(self, outPutFilename, metaKey = "entry1/before_scan/", dataKey = "entry1/instrument/",
     def nexus2ascii(self, outPutFilename, metaKey = "entry/diamond_scan/", dataKey = "entry/instrument/",
                      redundantKeyList = ["monochromator","name","source","description","id", "type","data_file", "local_name","beamline","end_station"]):
-#this effectively does all the conversion and write out the data 
+        #this effectively does all the conversion and write out the data 
         k = self.nexusData
         metaData = []
         data = []
@@ -185,10 +195,10 @@ class ReadWriteData():
                 else:
                     if filename[-4:] == ".nxs": #filter out everything that is not data
                         self.check_nexus_data(folder, outputFolder,str(filename))
-
-
-        
+#=============================== end of neuus conversion ==========================================================
     
+    #This section get image data in either tiff or hdf5 format 
+    #Not tested for new nexus format    
     def get_nexus_image_filename(self, subBranch = "/pixistiff/image_data", nData = None, mainBranch ="/entry1" ):
         if nData == None:
             nData = self.nexusData
@@ -210,9 +220,3 @@ class ReadWriteData():
     def write_image(self, outPutFilename, data, imageTpye = "TIFF"):
         im = Image.fromarray(data) # float32
         im.save("%s.%s" %(outPutFilename,imageTpye), imageTpye)
-        
-
-
-"""---------------------------------Reduction----------------------------------------------------------"""        
-        
- 
