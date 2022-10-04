@@ -12,7 +12,7 @@ Created on 29 Sep 2022
         closeConnection(self) : bool
     
     Send command:
-        sendCom(self, com : String) : bool
+        __sendCom(self, com : String) : bool
         readBuffer(self) : String
         
     get/set command:
@@ -24,7 +24,7 @@ import socket
 class Keithly3390():
     def __init__(self, bufferSize = 2048):
         self.k3390Socket = None; #this will store the connection socket
-        self.input_buffer = bufferSize
+        self.input_buffer = bufferSize #who much to read off
     
     #========= this will set up connection
     def connection(self, ip, port):
@@ -50,7 +50,7 @@ class Keithly3390():
     
         Cover string to byte and send it to the Keithly
     """
-    def sendCom(self, com):
+    def __sendCom(self, com):
         com = com  + "\n"
         try:
             self.k3390Socket.send(com.encode("utf_8")) #convert the string into byte and send it
@@ -83,10 +83,7 @@ class Keithly3390():
             print ("Voltage beyond limit (10mV to 10V")
             return False
         com = "VOLTage %f" %v
-        if (self.sendCom(com)):
-            return True
-        else:
-            return False
+        return self.__sendCom(com)
         
         
     #============= get voltage ==================================================================
@@ -95,7 +92,7 @@ class Keithly3390():
     """
     def getVoltage(self):
         com = "VOLTage?"
-        if (self.sendCom(com)):
+        if (self.__sendCom(com)):
             return self.readBuffer()
         else:
             return "Voltage readback failed"
