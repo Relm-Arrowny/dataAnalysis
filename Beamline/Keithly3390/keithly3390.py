@@ -5,7 +5,7 @@ Created on 29 Sep 2022
 
 @deprecated: 
     Python class to connect and control Keithly3390 
-    
+     user manual: https://mfile.tek.com.cn/drupal/51107028-1190-43e5-86c9-c623ff63e174.pdf 
 @version: 1.0 
     Connect via TCP, port for the keithly is 5025:
         connection(self, ip : String, port: int) : bool
