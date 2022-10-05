@@ -7,6 +7,9 @@ Created on 29 Sep 2022
     Python class to connect and control Keithly3390 
      user manual: https://mfile.tek.com.cn/drupal/51107028-1190-43e5-86c9-c623ff63e174.pdf 
 @version: 1.0 
+    class take two optional parameters, buffer size for the readout and a connection time out in seconds
+    
+   
     Connect via TCP, port for the keithly is 5025:
         connection(self, ip : String, port: int) : bool
         closeConnection(self) : bool
@@ -22,7 +25,8 @@ Created on 29 Sep 2022
 import socket
 
 class Keithly3390():
-    def __init__(self, bufferSize = 2048):
+    def __init__(self, bufferSize = 2048, timeout = 5):
+        self.timeout = 5; # connection time out in second
         self.k3390Socket = None; #this will store the connection socket
         self.input_buffer = bufferSize #who much to read off
     
@@ -31,6 +35,7 @@ class Keithly3390():
         try:
             self.k3390Socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
             self.k3390Socket.connect((ip, port));
+            self.k3390Socket.settimeout(5);
         except:
             print("Failed to connect")
             return False
