@@ -104,6 +104,7 @@ class Keithly3390():
         
 
 
+ 
  #============== Functions written by Matt, check these work =================================
 
     #================== Trigger ==============================================================
@@ -112,7 +113,7 @@ class Keithly3390():
 
         com = "*TRG"
 
-        if (self.sendCom(com)):
+        if (self.__sendCom(com)):
 
             return True
         
@@ -133,7 +134,7 @@ class Keithly3390():
 
         com = "VOLTage:LOW %f" %v
 
-        if (self.sendCom(com)):
+        if (self.__sendCom(com)):
 
             return True
 
@@ -151,7 +152,7 @@ class Keithly3390():
 
         com = "VOLTage:LOW?"
 
-        if (self.sendCom(com)):
+        if (self.__sendCom(com)):
 
             return self.readBuffer()
 
@@ -178,7 +179,7 @@ class Keithly3390():
 
         com = "VOLTage:HIGH %f" %v
 
-        if (self.sendCom(com)):
+        if (self.__sendCom(com)):
 
             return True
 
@@ -197,7 +198,7 @@ class Keithly3390():
 
         com = "VOLTage:HIGH?"
 
-        if (self.sendCom(com)):
+        if (self.__sendCom(com)):
 
             return self.readBuffer()
 
@@ -220,7 +221,7 @@ class Keithly3390():
 
         com = "FUNCtion:PULSe:WIDTh?"
 
-        if (self.sendCom(com)):
+        if (self.__sendCom(com)):
 
             return self.readBuffer()
 
@@ -244,7 +245,7 @@ class Keithly3390():
 
         com = "FUNCtion:PULSe:WIDTh %f" %w
 
-        if (self.sendCom(com)):
+        if (self.__sendCom(com)):
 
             return True
 
@@ -265,7 +266,7 @@ class Keithly3390():
 
         com = "PULSe:PERiod?"
 
-        if (self.sendCom(com)):
+        if (self.__sendCom(com)):
 
             return self.readBuffer()
 
@@ -289,7 +290,7 @@ class Keithly3390():
 
         com = "PULSe:PERiod %f" %w
 
-        if (self.sendCom(com)):
+        if (self.__sendCom(com)):
 
             return True
 
@@ -297,86 +298,7 @@ class Keithly3390():
 
             return False
 
-        
-    #=============== Pulse shape
-
-    #============= get PWM Function ==================================================================
-
-    def getPWMFunction(self):
-
-        com = "PWM:INTernal:FUNCtion?"
-
-        if (self.sendCom(com)):
-
-            return self.readBuffer()
-
-        else:
-
-            return "PWM:Function readback failed"
-
-
-    #============= set PWM Function ==================================================================
-
-    """ Takes a string function from {SINusoid, SQUare, RAMP, NRAMp, TRIangle}
-        return True/False
-    
-    """
-    def setPWMFunction(self, func):
-
-        com = "PWM:INTernal:FUNCtion %s" %func
-
-        if (self.sendCom(com)):
-
-            return True
-
-        else:
-            
-            return False
-
-
-    #============= get PWM frequency ==================================================================
-
-    """ Take no parameter
-        return a string contain PWM frequency
-    """
-    def getPWMFrequency(self):
-
-        com = "PWM:INTernal:FREQuency"
-
-        if (self.sendCom(com)):
-
-            return self.readBuffer()
-
-        else:
-
-            return "Pulsewidth readback failed"
-
-    #============= set PWM Frequency ==================================================================
-
-    """ Take a number and set PWM Frequency
-        return true /false
-    """
-
-    def setPWMFrequency(self, f):
-
-        if ( float(f) > 20e3 or float(f)<2e-3):
-
-            print ("PWM Frequency beyond limit (20mHz to 20KHz")
-
-            return False
-
-        com = "PWM:INTernal:FREQuency %f" %f
-
-        if (self.sendCom(com)):
-
-            return True
-
-        else:
-
-            return False
-
-
-        
+         
     #============= get duty cycle ==================================================================
 
     """ Take no parameter
@@ -387,7 +309,7 @@ class Keithly3390():
 
         com = "FUNCtion:PULSe:DCYCle"
 
-        if (self.sendCom(com)):
+        if (self.__sendCom(com)):
 
             return self.readBuffer()
 
@@ -411,11 +333,33 @@ class Keithly3390():
 
         com = "FUNCtion:PULSe:DCYCle %f" %percent
 
-        if (self.sendCom(com)):
+        if (self.__sendCom(com)):
 
             return True
 
         else:
 
             return False
+        
+        
+    
+    
+    #=================Set Shape============
+    """
+    Set the shape if the pulse {SINUsoid, SQUare, RAMP, PULse}
+    
+    """
+    
+    def setShape(self, shape):
+        
+        com = "FUNCtion %s" %shape
 
+        if (self.__sendCom(com)):
+
+            return True
+
+        else:
+            
+            return False
+        
+        
