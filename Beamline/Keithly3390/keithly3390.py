@@ -53,7 +53,7 @@ class Keithly3390():
     #============= This will send command ===================================================
     """ This function take one String parameter/keithly command
     
-        Cover string to byte and send it to the Keithly
+        Covert string to byte and send it to the Keithly
     """
     def __sendCom(self, com):
         com = com  + "\n"
@@ -81,10 +81,10 @@ class Keithly3390():
         
     #================== Set Voltage ==============================================================
     """ Take a number and set peak to peak voltage
-        return ture /false
+        return true /false
     """
     def setVoltageAmp(self, v):
-        if ( float(v) > 10 or float(v)<1e-2):
+        if ( float(v) > 10 or float(v)<1e-2): 
             print ("Voltage beyond limit (10mV to 10V")
             return False
         com = "VOLTage %f" %v
@@ -101,3 +101,321 @@ class Keithly3390():
             return self.readBuffer()
         else:
             return "Voltage readback failed"
+        
+
+
+ #============== Functions written by Matt, check these work =================================
+
+    #================== Trigger ==============================================================
+
+    def trigger(self):
+
+        com = "*TRG"
+
+        if (self.sendCom(com)):
+
+            return True
+        
+        else:
+
+            return False
+
+
+    #=============== Voltage
+
+    #================== Set Voltage Low ==============================================================
+
+    """ Take a number and set voltage low limit
+        return true /false
+    """
+
+    def setVoltageLow(self, v):
+
+        com = "VOLTage:LOW %f" %v
+
+        if (self.sendCom(com)):
+
+            return True
+
+        else:
+
+            return False
+
+    #============= get voltage low ==================================================================
+
+    """ Take no parameter
+        return a string contain voltage
+    """
+
+    def getVoltageLow(self):
+
+        com = "VOLTage:LOW?"
+
+        if (self.sendCom(com)):
+
+            return self.readBuffer()
+
+        else:
+
+            return "Voltage readback failed"
+
+
+
+
+    #================== Set Voltage High ==============================================================
+
+    """ Take a number and set voltage high limit
+        return true /false
+    """
+
+    def setVoltageHigh(self, v):
+
+        if ( float(v) > 10 or float(v)<1e-2):
+
+            print ("Voltage beyond limit (10mV to 10V")
+
+            return False
+
+        com = "VOLTage:HIGH %f" %v
+
+        if (self.sendCom(com)):
+
+            return True
+
+        else:
+
+            return False
+
+    
+    #============= get voltage high ==================================================================
+
+    """ Take no parameter
+        return a string contain voltage
+    """
+
+    def getVoltageHigh(self):
+
+        com = "VOLTage:HIGH?"
+
+        if (self.sendCom(com)):
+
+            return self.readBuffer()
+
+        else:
+
+            return "Voltage readback failed"
+
+
+
+
+    #=============== Pulse width
+
+    #============= get pulse width ==================================================================
+
+    """ Take no parameter
+        return a string contain pulsewidth
+    """
+
+    def getPulsewidth(self):
+
+        com = "FUNCtion:PULSe:WIDTh?"
+
+        if (self.sendCom(com)):
+
+            return self.readBuffer()
+
+        else:
+
+            return "Pulsewidth readback failed"
+
+    #============= set pulse width ==================================================================
+
+    """ Take a number and set pulsewidth
+        return true /false
+    """
+
+    def setPulsewidth(self, w):
+
+        if ( float(w) > 2000 or float(w)<20e-9):
+
+            print ("Pulsewidth beyond limit (20ns to 2000s")
+
+            return False
+
+        com = "FUNCtion:PULSe:WIDTh %f" %w
+
+        if (self.sendCom(com)):
+
+            return True
+
+        else:
+
+            return False
+
+    
+    #=============== Period
+
+    #============= get period ==================================================================
+
+    """ Take no parameter
+        return a string contain period
+    """
+
+    def getPeriod(self):
+
+        com = "PULSe:PERiod?"
+
+        if (self.sendCom(com)):
+
+            return self.readBuffer()
+
+        else:
+
+            return "Period readback failed"
+
+    #============= set period ==================================================================
+
+    """ Take a number and set period
+        return true /false
+    """
+
+    def setPeriod(self, w):
+
+        if ( float(w) > 2000 or float(w)<100e-9):
+
+            print ("Period beyond limit (100ns to 2000s")
+
+            return False
+
+        com = "PULSe:PERiod %f" %w
+
+        if (self.sendCom(com)):
+
+            return True
+
+        else:
+
+            return False
+
+        
+    #=============== Pulse shape
+
+    #============= get PWM Function ==================================================================
+
+    def getPWMFunction(self):
+
+        com = "PWM:INTernal:FUNCtion?"
+
+        if (self.sendCom(com)):
+
+            return self.readBuffer()
+
+        else:
+
+            return "PWM:Function readback failed"
+
+
+    #============= set PWM Function ==================================================================
+
+    """ Takes a string function from {SINusoid, SQUare, RAMP, NRAMp, TRIangle}
+        return True/False
+    
+    """
+    def setPWMFunction(self, func):
+
+        com = "PWM:INTernal:FUNCtion %s" %func
+
+        if (self.sendCom(com)):
+
+            return True
+
+        else:
+            
+            return False
+
+
+    #============= get PWM frequency ==================================================================
+
+    """ Take no parameter
+        return a string contain PWM frequency
+    """
+    def getPWMFrequency(self):
+
+        com = "PWM:INTernal:FREQuency"
+
+        if (self.sendCom(com)):
+
+            return self.readBuffer()
+
+        else:
+
+            return "Pulsewidth readback failed"
+
+    #============= set PWM Frequency ==================================================================
+
+    """ Take a number and set PWM Frequency
+        return true /false
+    """
+
+    def setPWMFrequency(self, f):
+
+        if ( float(f) > 20e3 or float(f)<2e-3):
+
+            print ("PWM Frequency beyond limit (20mHz to 20KHz")
+
+            return False
+
+        com = "PWM:INTernal:FREQuency %f" %f
+
+        if (self.sendCom(com)):
+
+            return True
+
+        else:
+
+            return False
+
+
+        
+    #============= get duty cycle ==================================================================
+
+    """ Take no parameter
+        return a string contain duty cycle
+    """
+
+    def getDutyCycle(self):
+
+        com = "FUNCtion:PULSe:DCYCle"
+
+        if (self.sendCom(com)):
+
+            return self.readBuffer()
+
+        else:
+
+            return "Pulsewidth readback failed"
+
+    #============= set duty cycle ==================================================================
+
+    """ Take a number and set duty cycle
+        return true /false
+    """
+
+    def setDutyCycle(self, percent):
+
+        if ( float(percent) > 1000 or float(percent)<0):
+
+            print ("PWM Frequency beyond limit (20mHz to 20KHz")
+
+            return False
+
+        com = "FUNCtion:PULSe:DCYCle %f" %percent
+
+        if (self.sendCom(com)):
+
+            return True
+
+        else:
+
+            return False
+
