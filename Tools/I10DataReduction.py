@@ -12,40 +12,40 @@ xas_pair_processing( self, data, folder, outFileName = "No output", metaOutFileN
 
 
 run example:
-dr = I10DataReduction()
-data = [481665,481679,481693,481707] 
-an array contains the first scan number for each pair
+    dr = I10DataReduction()
+    data = [481665,481679,481693,481707] 
+    an array contains the first scan number for each pair
 
-folder = "S:\Science\I10\Experiment\Fe2O3_BTO\Cm19658-3\i10-"
-is the input file folder
+    folder = "S:\Science\I10\Experiment\Fe2O3_BTO\Cm19658-3\i10-"
+    is the input file folder
 
-output = "C:/Users/wvx67826/Desktop/Fe2o3Bto/escan_th_3_15/"
-is the output file folder
-#output = "No output" 
+    output = "C:/Users/wvx67826/Desktop/Fe2o3Bto/escan_th_3_15/"
+    is the output file folder
+    #output = "No output" 
 
-metaOutFileName = [ "emecy1", "sx","pgm_energy"]
-meta is an array of the names that meta data will be added to the file name
+    metaOutFileName = [ "emecy1", "sx","pgm_energy"]
+    meta is an array of the names that meta data will be added to the file name
 
-nextPol is number of scan to skip between the two pol scans.
+    nextPol is number of scan to skip between the two pol scans.
 
-showPlot = False, show data in matlabplot
+    showPlot = False, show data in matlabplot
+    
+    linFit = False, it is fit the background with a straight line rather than just average
+    pol1= "circ_pos", pol2 = "circ_neg", 
+    first and second scan pol
 
-linFit = False, it is fit the background with a straight line rather than just average
-pol1= "circ_pos", pol2 = "circ_neg", 
-first and second scan pol
+    mirrorDrain = "16", the monitor channel
 
-mirrorDrain = "16", the monitor channel
-
-detectors =[17,18,19], array of detectors data to be loaded
-xasStartAverage = [10,40], range of data to average for background subtraction
-xasEndAverage = [-120,-105] range of data to averge for normalisation
+    detectors =[17,18,19], array of detectors data to be loaded
+    xasStartAverage = [10,40], range of data to average for background subtraction
+    xasEndAverage = [-120,-105] range of data to averge for normalisation
 
 
-refl_pair_processing( self, data, folder, outFileName = "No output", metaOutFileName =[""], 
-                            pol1 = "idu_circ_pos", nextPol = 1,showPlot = False, linFit = False,
-                            axis= "tth", mirrorDrain = "16", detectors =["refl","18","19"],
-                            xasStartAverage = [-50,-1], xasEndAverage = [0,1]):
-refl pair works the same way as xas with pol2 replaced with axis which replace energy with tth on x aixs and calculate Q
+    refl_pair_processing( self, data, folder, outFileName = "No output", metaOutFileName =[""], 
+                                pol1 = "idu_circ_pos", nextPol = 1,showPlot = False, linFit = False,
+                                axis= "tth", mirrorDrain = "16", detectors =["refl","18","19"],
+                                xasStartAverage = [-50,-1], xasEndAverage = [0,1]):
+    refl pair works the same way as xas with pol2 replaced with axis which replace energy with tth on x aixs and calculate Q
 
 '''
 from Tools import Tools

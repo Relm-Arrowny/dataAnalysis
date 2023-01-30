@@ -24,7 +24,7 @@ xrMoke = XrayMoke()
 ##============= Define sample gamma and beta ===============================
 n  = np.array([
                1.0,
-               1.0 + 0.00376976072  + 0.00253175874*i, #Pt
+               1.0 + 0.00376976072*0.7  + 0.00253175874*i*0.4, #Pt
                1.0 + 0.0014459691   + 0.000331679883*i, #permalloy 80
                1.0 + 0.00102811039  + 0.000295088976*i, #SiO2
                1.0 + 0.000922611449 + 0.0001342364124*i #Si 
@@ -32,49 +32,41 @@ n  = np.array([
 
 d = np.array([
               0,
-              30,
-              100,
-              300,
+              37,
+              120,
+              200,
               308.4
               ])
 
 q = np.array([
               0.0,
               0.0,
-              0.0014459691*0.4 + 0.00331679883*0.4*i, 
+              0.0014459691*0.5 + 0.00331679883*0.3*i, 
               0.0,
               0.0
               ])
 aPhi =   np.array([0.0, 0.0, 90,0, 0.0,0.0])
 aGamma = np.array([0.0, 0.0, 90,0, 0.0,0.0])
 ##=================================================================================
-
-"""
 ##============= Define sample gamma and beta ===============================
 n  = np.array([
                1.0,
-               1.0 + 0.00376976072  + 0.00253175874*i, #Pt
-               1.0 + 0.0014459691 + 0.000331679883*i, #permalloy 80
-               1.0 + 0.000922611449 + 0.0001342364124*i #Si 
+               1.0 + 0.0014459691   + 0.000331679883*i, #permalloy 80
                ])
 
 d = np.array([
               0,
-              50,
-              100,
-              308.4
+              120,
               ])
 
 q = np.array([
               0.0,
-              0,
-              0.0014459691*0.01 + 0.00331679883*0.01*i, 
-              0.0
+              0.0014459691*0.5 + 0.00331679883*0.3*i, 
               ])
-aPhi =   np.array([0.0,0.0, 1,0, 0.0,])
-aGamma = np.array([0.0,0.0, 90,0, 0.0,])
+aPhi =   np.array([0.0, 90,])
+aGamma = np.array([0.0, 90,])
 ##=================================================================================
-"""
+
 """To store result"""
 angle = np.array([])
 
@@ -92,15 +84,14 @@ angle = np.arange(-100,100,1.0)
 #spin = [0, 180, 0] #right angle to beam
 #spin = [15, -15, 0 ] #right angle to beam
 
-spin = [-90,90] #parallel 
-hy = np.full((1,80),spin[0])
+spin = [0,180] #parallel 
+hy = np.full((1,110),spin[0])
 #hy = np.append(hy, np.arange(spin[0], spin[1], -(spin[0]-spin[1])/5.0))
 #hy = np.append(hy, np.full((1,100),spin[1]))
-hy = np.append(hy, np.full((1,120),spin[1]))
+hy = np.append(hy, np.full((1,90),spin[1]))
 #hy = np.append(hy, np.arange(spin[1], spin[0], -(spin[1]-spin[0])/20.0))
 #hy = np.append(hy, np.full((1,80),spin[0]))
-#hy = np.arange (0,180*10, 180*10/200)
-#angle = hy
+
 
 """
 hy = np.full((1,100),spin[0])
@@ -113,7 +104,7 @@ hy = np.append(hy, np.full((1,80),spin[0]))
 
 #lTheta = [2,10,20,30,40,50]
 #lTheta = [30]
-lTheta = range(2,50,1)
+lTheta = np.arange(2,50,2.0)
 field = np.array([])
 intensity = np.array([])
 lth = np.array([])
@@ -153,7 +144,8 @@ for ange in lTheta:
     """do the hvm loop"""
     for gamma1 in hy:    
 
-        aGamma[2] = np.deg2rad(gamma1)
+        aGamma[1] = np.deg2rad(gamma1)
+        Qz = gamma1-90
           
 
         xrMoke.cal_intensity_mD(n, theta, aGamma, aPhi, q, d, waveLen)
@@ -168,17 +160,14 @@ for ange in lTheta:
         intensity8 = np.append(intensity8,xrMoke.get_intensity("LC", "Si+Pi"))
         intensity9 = np.append(intensity9,xrMoke.get_intensity("RC", "Si+Pi"))
 
- #   lIntensity9 = np.append(lIntensity9 , ((intensity9-np.min(intensity9))/np.max(intensity9)))
+    lIntensity9 = np.append(lIntensity9 , ((intensity9-np.min(intensity9))/np.max(intensity9)))
 
-#    lIntensity8 = np.append(lIntensity8 , ((intensity8-np.min(intensity8))/np.max(intensity8)))
-    lIntensity9 = np.append(lIntensity9 , ((intensity1-np.min(intensity1))/np.max(intensity1)))
-
-    lIntensity8 = np.append(lIntensity8 , ((intensity2-np.min(intensity2))/np.max(intensity2)))
+    lIntensity8 = np.append(lIntensity8 , ((intensity8-np.min(intensity8))/np.max(intensity8)))
 
     
 
     elapsed = timeit.default_timer() - start_time1
-    lAngle = np.append(lAngle,angle )
+    lAngle = np.append(lAngle,angle)
     tempTh = np.full((1, len(angle)), ange)[0]
     lth    = np.append(lth,tempTh)
     print (elapsed)
@@ -215,24 +204,24 @@ for ange in lTheta:
     """
     
     plt.show()
-i = "PCI"
-j = "PNI"
+i = "PCI_sub"
+j = "PNI_sub"
 print (len(lth), len(lAngle), len(lIntensity9))
-#lth = 4*np.pi/(12.4/0.707)*np.sin(np.deg2rad(lth))
 plt.figure()
-plt.tricontourf( lth, lAngle, lIntensity9, 30, cmap=plt.get_cmap('jet'))
-plt.title("Positive Helicity Increasing", fontsize=18)
-#plt.title("Positive Helicity Decreasing", fontsize=18)
+plt.tricontourf(lth, lAngle , lIntensity9, 30, cmap=plt.get_cmap('jet'))
 
-
-plt.xlabel("Theta (\u00b0)", fontsize=18)
-plt.colorbar()
-plt.savefig("%s-refMap" %(i))
-plt.figure()
-plt.tricontourf(lth, lAngle, lIntensity8, 30, cmap=plt.get_cmap('jet'))
 plt.title("Negative Helicity Increasing", fontsize=18)
 #plt.title("Negative Helicity Decreasing", fontsize=18)
 plt.xlabel("Theta (\u00b0)", fontsize=18)
+plt.ylabel("Field (Gauss)", fontsize=18)
 plt.colorbar()
-plt.savefig("%s-refMap" %(j))
+plt.savefig("output\\%s-refMap" %(i))
+plt.figure()
+plt.tricontourf(lth, lAngle , lIntensity8, 30, cmap=plt.get_cmap('jet'))
+plt.title("Positive Helicity Increasing", fontsize=18)
+#plt.title("Positive Helicity Decreasing", fontsize=18)
+plt.xlabel("Theta (\u00b0)", fontsize=18)
+plt.ylabel("Field (Gauss)", fontsize=18)
+plt.colorbar()
+plt.savefig("output\\%s-refMap" %(j))
 plt.show()

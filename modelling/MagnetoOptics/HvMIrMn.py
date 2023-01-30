@@ -47,7 +47,7 @@ q = np.array([
               0.0,
               0.0,
               0.0,
-              8.58166E-05 + 1.27456E-04*i, 
+              8.58166E-05 + 1.27456E-05*i, 
               0.0, 
               0.0,
               0.0
@@ -74,11 +74,19 @@ spin = [90, -90, 0] #right angle to beam
 #spin = [15, -15, 0 ] #right angle to beam
 
 #spin = [90,180] #parallel 
-hy = np.full((1,119),spin[0])
+"""hy = np.full((1,119),spin[0])
 hy = np.append(hy, spin[2])
 hy = np.append(hy, np.full((1,199),spin[1]))
 hy = np.append(hy, spin[2])
 hy = np.append(hy, np.full((1,80),spin[0]))
+"""
+hy = np.full((1,100),spin[0])
+hy = np.append(hy, np.arange(spin[0], spin[1], -(spin[0]-spin[1])/20.0))
+hy = np.append(hy, np.full((1,180),spin[1]))
+hy = np.append(hy, np.arange(spin[1], spin[0], -(spin[1]-spin[0])/20.0))
+hy = np.append(hy, np.full((1,80),spin[0]))
+
+
 
 lTheta = [2, 4, 8, 6, 12, 24]
 for ange in lTheta:

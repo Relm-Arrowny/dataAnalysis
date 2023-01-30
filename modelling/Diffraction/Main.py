@@ -2,6 +2,9 @@
 Created on 7 Aug 2018
 
 @author: wvx67826
+
+@Description:
+    This take scattering formfactor and calculate the scattered intensisty
 '''
 import numpy as np
 import matplotlib.pyplot as plt

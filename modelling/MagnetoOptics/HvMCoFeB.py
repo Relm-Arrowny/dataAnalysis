@@ -35,8 +35,8 @@ d = np.array([0,
               200])
 q = np.array([0,
               0,
-              1.68661e-4+1.06361e-5*i,
-              1.68661e-4+1.06361e-5*i,
+              0.00106697413*0.1  + 0.0006667712*0.1*i,
+              0.00106697413*0.1  + 0.0006667712*0.1*i,
               0,
               0])
 
@@ -70,17 +70,25 @@ start_time1 = timeit.default_timer()
 angle = np.arange(-100,100,1.0)
 angle = np.append(angle, np.arange(100,-100,-1.0))
 
-spin = [0, 180, 0] #right angle to beam
+spin = [90, -90, 0] #right angle to beam
 #spin = [15, -15, 0 ] #right angle to beam
 
 #spin = [90,180] #parallel 
-hy = np.full((1,119),spin[0])
+"""hy = np.full((1,119),spin[0])
 hy = np.append(hy, spin[1])
 hy = np.append(hy, np.full((1,199),spin[1]))
 hy = np.append(hy, spin[1])
 hy = np.append(hy, np.full((1,80),spin[0]))
+"""
+hy = np.full((1,100),spin[0])
+hy = np.append(hy, np.arange(spin[0], spin[1], -(spin[0]-spin[1])/20.0))
+hy = np.append(hy, np.full((1,180),spin[1]))
+hy = np.append(hy, np.arange(spin[1], spin[0], -(spin[1]-spin[0])/20.0))
+hy = np.append(hy, np.full((1,80),spin[0]))
 
-lTheta = [10]
+
+
+lTheta = [12]
 for ange in lTheta:
     
     intensity1 = np.array([])
@@ -107,7 +115,7 @@ for ange in lTheta:
         #aPhi[1] = np.deg2rad(gamma1)
         #aPhi[2] = np.deg2rad(gamma1)
         aGamma[3] = np.deg2rad(gamma1)
-        #aGamma[2] = np.deg2rad(gamma1)
+        aGamma[2] = np.deg2rad(gamma1)
         """    if gamma1 ==spin[0]:
             aPhi[3] = np.deg2rad(14)
         if gamma1 == spin[1]:
