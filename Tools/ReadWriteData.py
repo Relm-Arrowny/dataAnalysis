@@ -199,7 +199,7 @@ class ReadWriteData():
     
     #This section get image data in either tiff or hdf5 format 
     #Not tested for new nexus format    
-    def get_nexus_image_filename(self, subBranch = "/pixistiff/image_data", nData = None, mainBranch ="/entry1" ):
+    def get_nexus_image_filename(self, subBranch = "/pimtetiff/image_data", nData = None, mainBranch ="/entry" ):
         if nData == None:
             nData = self.nexusData
         temp = nData[mainBranch + subBranch]

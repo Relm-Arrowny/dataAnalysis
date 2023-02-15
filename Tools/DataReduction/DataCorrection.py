@@ -62,7 +62,6 @@ class XasDataProcess():
             corBackData = (data1- average(tempData1[data1lowCutOff:data1highCutOff]))
             tempData2 = list(corBackData[data1EndLowCutOff: data1EndHighCutOff])
             tempData2.sort()
-
             return corBackData /average(tempData2[1:-1])
            
     

@@ -42,7 +42,6 @@ class Reduction(ReadWriteData, XasDataProcess):
         
         self.read_nexus_data(folder, scanNo)
         for i in lScanableName:
-            print(i)
             lData.append(self.get_nexus_data(i))
         for i in lMetaName:
             lMeta.append(self.get_nexus_data(i))
@@ -100,6 +99,7 @@ class Reduction(ReadWriteData, XasDataProcess):
             lCnData = []
             
             for scan in lScanPair:
+               
                 
                 data = self.read_nexus_data(folder, scan)
                 scanType = self.get_nexus_data("/id/polarisation",nData =data)
@@ -120,9 +120,8 @@ class Reduction(ReadWriteData, XasDataProcess):
                 #print (scan)
             #these store the average     
             aveCpData = lCpData[0]
-
-            aveCnData =  lCnData[0]          
             
+            aveCnData =  lCnData[0]          
             for k in range(1,len(lCpData)):
                 for i in range(1, len(aveCpData)):
                     aveCpData[i] = self.average_w_corr(aveCpData[0],lCpData[k][0], aveCpData[i], lCpData[k][i] )
@@ -151,7 +150,7 @@ class Reduction(ReadWriteData, XasDataProcess):
     def __corr_xas_data__(self,folder, scan, lScanableName, lMetaName, scanType, cutoffs):
         lDataName = list(lScanableName)
         if scanType in ["pc","nc","lh","lv"]:
-            lDataName.insert(0, "/pgm/energy")
+            lDataName.insert(0, "/energy/pgm_energy")
         else:
             lDataName.insert(0, "/%s/%s" %(scanType,"value"))
             
