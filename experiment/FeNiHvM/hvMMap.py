@@ -24,7 +24,7 @@ for i in range (start, end + 1, 5):
     #plt.figure()
     rWD.read_nexus_data(folder, i)
     tempField = rWD.get_nexus_data("/ui1ao3/value")*714
-    th = np.full((1,len(tempField)),rWD.get_nexus_data("/rasor/diff/theta"))
+    th = np.full((1,len(tempField)),4.*np.pi/(12.4/0.707)*np.sin(np.deg2rad(rWD.get_nexus_data("/rasor/diff/theta"))))
     #print (th[0])
     lth = np.hstack((lth,th[0]))
     field = np.hstack((field,tempField))

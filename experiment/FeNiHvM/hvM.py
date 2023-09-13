@@ -15,9 +15,9 @@ op.add_clipboard_to_figures()
 rWD = ReadWriteData()
 
 
-start =695139
-end = start +1
-folder ="Z:\\2022\\cm31127-2\\i10-"
+start = 694876
+end = start+1
+folder = "C:\\Users\\wvx67826\\Downloads\\dls\\i10\\data\\2022\\cm31127-2\\i10-"#"Z:\\2022\\cm31127-2\\i10-"
 field = np.array([])
 intensityInc = np.array([])
 intensityDec = np.array([])
@@ -41,14 +41,14 @@ for i in range (start, end, 3):
 
     
     
-    plt.plot(field, data)
+    
     #plt.figure(2)
     #plt.plot(field, data1)
     rWD.read_nexus_data(folder, i+1)
     tempField = rWD.get_nexus_data("/ui1ao3/value")*714
     th = rWD.get_nexus_data("/rasor/diff/theta")
     print (th)
-    data = rWD.get_nexus_data("/rdeta/rnormdet")
+    tempdata = rWD.get_nexus_data("/rdeta/rnormdet")
     data1 = rWD.get_nexus_data("/rdeta/rnormfluo")
     if i == start:
         intensityDec = data
@@ -57,14 +57,15 @@ for i in range (start, end, 3):
 
     #plt.figure(1)
     #th = 10
-    plt.title("Sigma-Sigma \u03B8 = %i\u00b0" %th, fontsize=20)
+    #plt.title("Sigma-Sigma \u03B8 = %i\u00b0" %th, fontsize=20)
     #plt.title("Linear Horizontal \u03B8 = %i\u00b0" %th, fontsize=20)
     #plt.title("Linear Vertical \u03B8 = %i\u00b0" %th, fontsize=20)
-    #plt.title("Positive Helicity",fontsize=50)
-    #plt.title("Negative Helicity",fontsize=50)
+    plt.title("Circular Positive",fontsize=50)
+    #plt.title("Circular Negative",fontsize=50)
     plt.ylabel("Reflectivity (arb. units)", fontsize=48)
     plt.xlabel("Field (Gauss)", fontsize=48)
-    plt.plot(tempField, data, linestyle="solid", linewidth=1.0)
+    plt.plot(field, data, linewidth=4)
+    plt.plot(tempField, tempdata, linewidth=4)
     plt.xticks(fontsize = 40)
     plt.yticks(fontsize = 40)
     plt.savefig("output\\%i-th=%i_ref" %(i,th), bbox_inches='tight')

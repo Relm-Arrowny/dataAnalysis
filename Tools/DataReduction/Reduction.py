@@ -102,7 +102,8 @@ class Reduction(ReadWriteData, XasDataProcess):
                
                 
                 data = self.read_nexus_data(folder, scan)
-                scanType = self.get_nexus_data("/id/polarisation",nData =data)
+                scanType = str(self.get_nexus_data("/id/polarisation",nData =data), 'UTF-8')
+                print(scanType)
                 if "pc" in scanType:
                     lCpDataName, cpData, lCpMetaName, lCpMeta = self.__corr_xas_data__(folder, scan, lScanableName, lMetaName, scanType, cutoffs)
                     lCpData.append(cpData)
@@ -110,10 +111,10 @@ class Reduction(ReadWriteData, XasDataProcess):
                     lCnDataName, cnData, lCnMetaName, lCnMeta = self.__corr_xas_data__(folder, scan, lScanableName, lMetaName, scanType, cutoffs)
                     lCnData.append(cnData)
                 elif "lh" in scanType:
-                    lCpDataName, lCpData, lCpMetaName, lCpMeta = self.__corr_xas_data__(folder, scan, lScanableName, lMetaName, scanType, cutoffs)
+                    lCpDataName, cpData, lCpMetaName, lCpMeta = self.__corr_xas_data__(folder, scan, lScanableName, lMetaName, scanType, cutoffs)
                     lCpData.append(cpData)
                 elif "lv" in scanType:
-                    lCnDataName, lCnData, lCnMetaName, lCnMeta = self.__corr_xas_data__(folder, scan, lScanableName, lMetaName, scanType, cutoffs)
+                    lCnDataName, cnData, lCnMetaName, lCnMeta = self.__corr_xas_data__(folder, scan, lScanableName, lMetaName, scanType, cutoffs)
                     lCnData.append(cnData)    
                 
                 else: print ("not circular energy scan")

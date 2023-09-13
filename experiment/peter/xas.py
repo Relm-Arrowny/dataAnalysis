@@ -24,11 +24,11 @@ lMetaName = ["/id/polarisation",
                 "/hfm/pitch",]
 #folder = "C:\\Users\\wvx67826\\Desktop\\New folder\\data\\i10-"#-pixis-files
 #To get the polarisation details
+num = 300
+folder ="C:\\Users\\wvx67826\\Desktop\\stuartC\\I10data%s\\i10-" %num
+output = "C:\\Users\\wvx67826\\Desktop\\stuartC\\I10data%s\\" %num
 
-folder ="C:\\Users\\wvx67826\\Desktop\\data_nexus\\i10-"
-output = "C:\\Users\\wvx67826\\Desktop\\EuO\\"
-
-for filename in sorted(os.listdir("C:\\Users\\wvx67826\\Desktop\\data_nexus\\")): 
+for filename in sorted(os.listdir("C:\\Users\\wvx67826\\Desktop\\stuartC\\I10data%s\\" %num)): 
     scan = filename[4:-4]
     print(scan)
 #for scan in range(692510,692793):
@@ -49,5 +49,5 @@ for filename in sorted(os.listdir("C:\\Users\\wvx67826\\Desktop\\data_nexus\\"))
         
         metaData = np.append(metaData,tempData)
 
-    rWD.write_ascii("i10-%s.dat" %scan, lScanable, data, lMetaName, metaData)
+    rWD.write_ascii(output+"i10-%s.dat" %scan, lScanable, data, lMetaName, metaData)
 
