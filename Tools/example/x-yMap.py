@@ -23,7 +23,7 @@ def getXYI(data):
     sx = full((1,len(ref)),Rd.get_nexus_meta("/sx/sx"))
     sy = Rd.get_nexus_data("/sz/sz") 
     alldata = vstack((sx,sy,ref,fluo,drain ))
-    print energy,  Rd.get_nexus_meta("/pol/value"), Rd.get_nexus_meta("/sx/sx")
+    #print energy,  Rd.get_nexus_meta("/pol/value"), Rd.get_nexus_meta("/sx/sx")
     return alldata
 xyData = array([])
 folder = "Z://2020//mm24486-1//i10-"
